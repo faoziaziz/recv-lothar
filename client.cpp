@@ -18,7 +18,7 @@ void Client::run()
         return;
     }
 
-    
+    /* waitForReadyRead */
     socket->waitForReadyRead();
     QByteArray request = socket->readAll();
     qInfo() << "Request Length: " << request.length();
@@ -26,6 +26,8 @@ void Client::run()
     accdb AksesDB;
     AksesDB.write_db(request);
 
+
+    /* Daemon */
     QByteArray data("kalistaumari");
     QByteArray response;
 
