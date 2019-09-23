@@ -26,6 +26,13 @@ void Client::run()
     accdb AksesDB;
     AksesDB.write_db(request);
 
+    QByteArray data("kalistaumari");
+    QByteArray response;
+
+
+    response.append(data);
+    socket->write(response);
+
 
     socket->close();
     socket->deleteLater();

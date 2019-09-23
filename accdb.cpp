@@ -50,11 +50,13 @@ void accdb::write_db(QByteArray data)
         
         if(!query.exec())
         {
+            /* Query not executed */
             qInfo() << db.lastError().text();
             qInfo() << query.lastError().text();
         }
         else
         {   
+            //
             qInfo() << "Sukses write, Tan . . ! ! " ;
         }
 
