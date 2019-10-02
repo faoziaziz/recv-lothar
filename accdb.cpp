@@ -3,10 +3,19 @@
 
 accdb::accdb()
 {
+    /*
+     *  this constructor for accessing database
+    */
+
     this->hostname ="localhost";
     this->username="trumon";
     this->password="tappingbox123";
     this->database="Trumon";
+
+    this->db.setHostName(this->hostname);
+    this->db.setUserName(this->username);
+    this->db.setPassword(this->password);
+    this->db.setDatabaseName(this->database);
 
 }
 
@@ -17,6 +26,11 @@ accdb::accdb(QString h_name, QString u_name, QString u_password, QString u_dbase
     this->username=u_name;
     this->password=u_password;
     this->database=u_dbase;
+
+    this->db.setHostName(this->hostname);
+    this->db.setUserName(this->username);
+    this->db.setPassword(this->password);
+    this->db.setDatabaseName(this->database);
 }
 
 
@@ -29,17 +43,11 @@ void accdb::write_db(QByteArray data)
     qInfo()<<"password : "<<this->password;
     qInfo()<<"database : "<<this->database;
 
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(this->hostname);
-    db.setUserName(this->username);
-    db.setPassword(this->password);
-    db.setDatabaseName(this->database);
 
-
-    if(!db.open())
+    if(!this->db.open())
     {
         qInfo() << "Could not open connection!";
-        qInfo() << db.lastError().text();
+        qInfo() << this->db.lastError().text();
     }
     else
     {
@@ -56,7 +64,7 @@ void accdb::write_db(QByteArray data)
         }
         else
         {   
-            //
+            /* for notification success write */
             qInfo() << "Sukses write, Tan . . ! ! " ;
         }
 
@@ -67,11 +75,76 @@ void accdb::write_db(QByteArray data)
     
 }
 
+void accdb::get_iklan()
+{
+    qInfo()<<"get data iklan"<<endl;
+    if(!this->db.open()){
+        qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
+    }
+    else{
+        qInfo()<<"waktunya execute the query";
+        QSqlQuery query;
+        QString cmd="SELECT Max(Counting) FROM NeiraIklan WHERE iklan_type =2";
+        if(!query.exec(cmd)){
+            qInfo()<<"Query iklan error, croot";
+        }
+        else{
+            qInfo()<<"Nyambung dengan query";
+            while(query.next()){
+                QString idiklan=query.value(0).toString();
+                QString dataiklan=query.value(1).toString();
+
+                this->iklan_id = idiklan;
+                this->data_iklan = dataiklan;
+
+
+            }
+        }
+    }
+}
+
 void accdb::test_db(){
+
+    /* testing for database */
+
     qInfo()<<"Selesai ";
+
+    if(!this->db.open()){
+        qInfo()<<"Sending error message, db connection cannot be established";
+    }
+    else{
+        /* this query executed while test db successfuly connected */
+        qInfo()<<"Connected starting to query";
+        QSqlQuery query;
+        QString cmd="SELECT data_iklan_neira FROM NeiraIklanData WHERE flag_avalaible=1";
+        if(!query.exec(cmd)){
+            qInfo()<<"execute failure";
+        }else {
+            /* if sucses*/
+            while(query.next()){
+                /* get data iklan neira convert to the string */
+                QString data_iklan_neira = query.value(1).toString();
+                qInfo()<<"Data iklan Neira "<<data_iklan_neira;
+                /*aku pengin sholat */
+            }
+
+        }
+
+
+
+        /* get query */
+        this->db.close();
+
+    }
 }
 
 accdb::~accdb()
 {
+    /* this is destructor for database aplication*/
     qInfo()<<"\nend of database\n";
+
+
+    /* some destruction of database */
+
+    //this->db.close();
 }

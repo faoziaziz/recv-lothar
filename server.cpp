@@ -19,8 +19,11 @@ void Server::start(quint16 port)
     }
 }
 
+
+
 void Server::quit()
 {
+
     this->close();
     qInfo() << "Server Stopped!";
 }
@@ -32,5 +35,4 @@ void Server::incomingConnection(qintptr handle)
     Client* client = new Client(nullptr, handle);
     client->setAutoDelete(true);
     pool.start(client);
-
 }

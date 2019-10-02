@@ -24,21 +24,35 @@ void Client::run()
     qInfo() << "Request Length: " << request.length();
     qInfo() <<request;
     accdb AksesDB;
-    AksesDB.write_db(request);
 
 
-    /* Daemon */
-    QByteArray data("kalistaumari");
+
+
+    /* Daemon data reply to give feedback to mcu,
+     * this called adv response */
+
+    QByteArray data("HEAD");
     QByteArray response;
 
 
+    /* response append data will get the socket to write*/
     response.append(data);
+    response.append(AksesDB.iklan_id);
+    response.append("K");
+    response.append("02");
+    response.append(AksesDB.data_iklan);
+    response.append("TAIL");
+    /* kalista*/
+
+    AksesDB.write_db(request);
+    qInfo()<<"CCROT pesan terikirim : "<<response;
     socket->write(response);
 
-
+    /*socket close */
     socket->close();
     socket->deleteLater();
 
+    /* show the threading because i use multi threading */
     qInfo() << this << " done " << QThread::currentThread();
 
 

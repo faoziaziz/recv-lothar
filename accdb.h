@@ -18,12 +18,23 @@ public:
     void test_db();
 
     void write_db(QByteArray data);
+    void get_iklan();
     /* destructor */
     ~accdb();
+
+    /* crot */
+    QString iklan_id;
+    QString data_iklan;
+
+    /* variable */
     QString hostname;
     QString username;
     QString password;
     QString database;
+    //QByteArray data_iklan;
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+
 
 };
 
