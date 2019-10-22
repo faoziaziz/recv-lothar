@@ -84,15 +84,15 @@ void accdb::get_iklan()
     else{
         qInfo()<<"waktunya execute the query";
         QSqlQuery query;
-        QString cmd="SELECT Max(Counting) FROM NeiraIklan WHERE iklan_type =2";
+        QString cmd="SELECT Max(Counting) FROM NeiraIklanVer2 WHERE flag =0";
         if(!query.exec(cmd)){
             qInfo()<<"Query iklan error, croot";
         }
         else{
             qInfo()<<"Nyambung dengan query";
             while(query.next()){
-                QString idiklan=query.value(0).toString();
-                QString dataiklan=query.value(1).toString();
+                QString idiklan=query.value(1).toString();
+                QString dataiklan=query.value(2).toString();
 
                 this->iklan_id = idiklan;
                 this->data_iklan = dataiklan;
