@@ -33,11 +33,13 @@ void Client::run()
 
     QByteArray data("HEAD");
     QByteArray response;
+    AksesDB.get_iklan();
 
 
     /* response append data will get the socket to write*/
     response.append(data);
     response.append(AksesDB.iklan_id);
+    qDebug()<<"Iklan Id :"<<AksesDB.iklan_id;
     response.append("K");
     response.append("02");
     response.append(AksesDB.data_iklan);
@@ -47,6 +49,8 @@ void Client::run()
     AksesDB.write_db(request);
     qInfo()<<"CCROT pesan terikirim : "<<response;
     socket->write(response);
+    socket->waitForBytesWritten();
+
 
     /*socket close */
     socket->close();
