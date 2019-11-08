@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         database = argv[4];
         accdb aksesD(hostname, username, password, database);
         
-        server.start(6969);
+        server.start(7669);
     }
     else{
         qInfo()<<"Cara menggunakannya ";
