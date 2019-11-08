@@ -18,7 +18,11 @@ public:
     void test_db();
 
     void write_db(QByteArray data);
-    void get_iklan();
+    /*
+        get iklan provide mode, if 1 then earning
+        if 2 then redemn
+    */
+    void get_iklan(int mode);
     /* destructor */
     ~accdb();
 

@@ -75,32 +75,60 @@ void accdb::write_db(QByteArray data)
     
 }
 
-void accdb::get_iklan()
+void accdb::get_iklan(int mode)
 {
-    qInfo()<<"get data iklan"<<endl;
-    if(!this->db.open()){
-        qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
-    }
-    else{
-        qInfo()<<"waktunya execute the query";
-        QSqlQuery query;
-        QString cmd="select * from NeiraIklanVer2 Where (NO = (select min(NO) from NeiraIklanVer2) and Flag=0);";
-        if(!query.exec(cmd)){
-            qInfo()<<"Query iklan error, croot";
+    if (mode==1){
+        qInfo()<<"get data iklan"<<endl;
+        if(!this->db.open()){
+            qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
         }
         else{
-            qInfo()<<"Nyambung dengan query";
-            while(query.next()){
-                QString idiklan=query.value(1).toString();
-                QString dataiklan=query.value(3).toString();
-		qDebug()<<"database Iklan id : "<<idiklan;
-                this->iklan_id = idiklan;
-                this->data_iklan = dataiklan;
-
-
+            qInfo()<<"waktunya execute the query";
+            QSqlQuery query;
+            QString cmd="select * from NeiraIklanVer2 Where (NO = (select min(NO) from NeiraIklanVer2) and Flag=0);";
+            if(!query.exec(cmd)){
+                qInfo()<<"Query iklan error, croot";
+            }
+            else{
+                qInfo()<<"Nyambung dengan query";
+                while(query.next()){
+                    QString idiklan=query.value(1).toString();
+                    QString dataiklan=query.value(3).toString();
+            qDebug()<<"database Iklan id : "<<idiklan;
+                    this->iklan_id = idiklan;
+                    this->data_iklan = dataiklan;
+                }
             }
         }
+
+    } else if(mode==2){
+        qInfo()<<"get data iklan"<<endl;
+        if(!this->db.open()){
+            qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
+        }
+        else{
+            qInfo()<<"waktunya execute the query";
+            QSqlQuery query;
+            QString cmd="select * from NeiraIklanVer2 Where (NO = (select max(NO) from NeiraIklanVer2) and Flag=69);";
+            if(!query.exec(cmd)){
+                qInfo()<<"Query iklan error, croot";
+            }
+            else{
+                qInfo()<<"Nyambung dengan query";
+                while(query.next()){
+                    QString idiklan=query.value(1).toString();
+                    QString dataiklan=query.value(3).toString();
+            qDebug()<<"database Iklan id : "<<idiklan;
+                    this->iklan_id = idiklan;
+                    this->data_iklan = dataiklan;
+
+
+                }
+            }
+        }
+
     }
+
 }
 
 void accdb::test_db(){
