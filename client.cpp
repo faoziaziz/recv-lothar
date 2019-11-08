@@ -14,12 +14,11 @@ void Client::run()
 
     /* Regular expression for earning and redeem */
     QRegularExpression reERN, reRDM;
-    QRegularExpressionMatch matchERN, matchRDM;
-    QByteArray  string_MCU= "123124123 REQUEST_RDT";
-    reERN.setPattern("REQUEST_RDT");
-    reRDM.setPattern("REQUEST_ERP");
-
-
+    QRegularExpressionMatch matchERN, matchRDM;  
+    QString request2, request3;
+    //QByteArray  string_MCU= "123124123 REQUEST_RDT";
+    reERN.setPattern("REQUEST_ERP");
+    reRDM.setPattern("REQUEST_RDT");
 
 
 
@@ -44,9 +43,16 @@ void Client::run()
     qInfo()<<"Data Dari MCU"<<endl;
     qInfo() <<request;
 
+    /* Convert to request string siapa tahu suatu harii kepake*/
+    for (int i=0; i<11;i++)
+    {
+	request3[i] = request[16+i];
+    }
+
     /* For executing */
-    matchERN = reERN.match(request);
-    matchRDM =reRDM.match(request);
+    request2 = request;
+    matchERN = reERN.match(request.mid(16,11));
+    matchRDM =reRDM.match(request.mid(16,11));
 
     if(matchERN.hasMatch()){
         qInfo()<<"REQUEST_REDT Executed";
@@ -128,7 +134,16 @@ void Client::run()
         socket->waitForBytesWritten();
     }
     else{
+	QRegularExpression re;
+	QRegularExpressionMatch match1;
+	re.setPattern("REQ");
         qInfo()<<"Gak ada yagn cocok";
+	qInfo()<<"Request yang dikirim ";
+	qInfo()<<request;
+	match1 = re.match(request);
+	if (match1.hasMatch()){
+		qInfo()<<"Kedetek";
+	}
         socket->write("NOK");
         socket->waitForBytesWritten();
     }
