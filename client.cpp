@@ -14,13 +14,12 @@ void Client::run()
 
     /* Regular expression for earning and redeem */
     QRegularExpression reERN, reRDM;
-    QRegularExpressionMatch matchERN, matchRDM;  
+    QRegularExpressionMatch matchERN, matchRDM;
     QString request2, request3;
+    QString DeviceId;
 
     reERN.setPattern("REQUEST_ERP");
     reRDM.setPattern("REQUEST_RDT");
-
-
 
     qInfo() << this << " run " << QThread::currentThread();
 
@@ -31,8 +30,6 @@ void Client::run()
         delete socket;
         return;
     }
-
-
 
     /* waitForReadyRead */
     socket->waitForReadyRead();
@@ -46,7 +43,12 @@ void Client::run()
     /* Convert to request string siapa tahu suatu harii kepake*/
     for (int i=0; i<11;i++)
     {
-	request3[i] = request[16+i];
+        request3[i] = request[16+i];
+    }
+
+    /*get device id */
+    for (int i=0;i<15;i++){
+        DeviceId[i]=request[i];
     }
 
     /* For executing */
@@ -66,7 +68,7 @@ void Client::run()
 
         QByteArray data("HEAD");
         QByteArray response;
-        AksesDB.get_iklan(1);
+        AksesDB.get_iklan(1, DeviceId);
 
 
         /*
@@ -95,6 +97,9 @@ void Client::run()
 
     }
     else if(matchRDM.hasMatch()) {
+        /*
+         *  For Redempoint algorithm
+        */
         qInfo()<<"REQUEST_REDT Executed";
         qInfo()<<request;
         qInfo()<<"ada yang cocok";
@@ -106,8 +111,7 @@ void Client::run()
 
         QByteArray data("HEAD");
         QByteArray response;
-        AksesDB.get_iklan(2);
-
+        AksesDB.get_iklan(2, DeviceId);
 
         /*
          *  response append data will get the socket to write
@@ -134,16 +138,19 @@ void Client::run()
         socket->waitForBytesWritten();
     }
     else{
-	QRegularExpression re;
-	QRegularExpressionMatch match1;
-	re.setPattern("REQ");
+        /* for Nothing Algorithm */
+
+        /* RegularExpression for matching from data interface*/
+        QRegularExpression re;
+        QRegularExpressionMatch match1;
+        re.setPattern("REQ");
         qInfo()<<"Gak ada yagn cocok";
-	qInfo()<<"Request yang dikirim ";
-	qInfo()<<request;
-	match1 = re.match(request);
-	if (match1.hasMatch()){
-		qInfo()<<"Kedetek";
-	}
+        qInfo()<<"Request yang dikirim ";
+        qInfo()<<request;
+        match1 = re.match(request);
+        if (match1.hasMatch()){
+            qInfo()<<"Kedetek";
+        }
         socket->write("NOK");
         socket->waitForBytesWritten();
     }

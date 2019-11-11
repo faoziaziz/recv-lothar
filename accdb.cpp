@@ -85,6 +85,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
         else{
             qInfo()<<"CPUID_string : "<<CPUID_string;
             qInfo()<<"waktunya execute the query";
+            /* simple with the man */
             QSqlQuery query;
             QString cmd="select * from NeiraIklanVer2 Where (NO = (select min(NO) from NeiraIklanVer2) and Flag=0);";
             if(!query.exec(cmd)){
@@ -111,7 +112,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             qInfo()<<"waktunya execute the query";
             qInfo()<<"CPUID String : "<<CPUID_string;
             QSqlQuery query;
-            QString cmd="SELECT COALESCE(MAX(CASE WHEN UUID_ENC  IS NOT NULL and CPUID=:cpuid THEN id END), MAX(id)) AS id FROM   NeiraIklanVer3;";
+            QString cmd="SELECT COALESCE(MAX(CASE WHEN UUID_ENC  IS NOT NULL and CPUID=:cpuid THEN NO END), MAX(NO)) AS id FROM   NeiraIklanVer3;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
             if(!query.exec(cmd)){
