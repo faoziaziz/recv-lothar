@@ -95,7 +95,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 while(query.next()){
                     QString idiklan=query.value(1).toString();
                     QString dataiklan=query.value(3).toString();
-            qDebug()<<"database Iklan id : "<<idiklan;
+                    qDebug()<<"database Iklan id : "<<idiklan;
                     this->iklan_id = idiklan;
                     this->data_iklan = dataiklan;
                 }

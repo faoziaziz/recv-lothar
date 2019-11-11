@@ -16,7 +16,7 @@ void Client::run()
     QRegularExpression reERN, reRDM;
     QRegularExpressionMatch matchERN, matchRDM;  
     QString request2, request3;
-    //QByteArray  string_MCU= "123124123 REQUEST_RDT";
+
     reERN.setPattern("REQUEST_ERP");
     reRDM.setPattern("REQUEST_RDT");
 

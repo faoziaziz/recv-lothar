@@ -22,7 +22,7 @@ public:
         get iklan provide mode, if 1 then earning
         if 2 then redemn
     */
-    void get_iklan(int mode);
+    void get_iklan(int mode, QString CPUID_String);
     /* destructor */
     ~accdb();
 
