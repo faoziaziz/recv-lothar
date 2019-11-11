@@ -1,3 +1,9 @@
+/*
+	Author : Aziz Amerul Faozi
+	Description :
+		Digunakan hanya untuk melakukan testing di server tertentu.
+*/
+
 #include "client.h"
 #include "accdb.h"
 
@@ -53,13 +59,16 @@ void Client::run()
 
     /* For executing */
     request2 = request;
+
+
     matchERN = reERN.match(request.mid(16,11));
     matchRDM =reRDM.match(request.mid(16,11));
 
     if(matchERN.hasMatch()){
-        qInfo()<<"REQUEST_REDT Executed";
+	/* This will execute if device requie Earning */
+        qInfo()<<"REQUEST_EARNING Executed. ";
         qInfo()<<request;
-        qInfo()<<"ada yang cocok";
+        qInfo()<<"ada yang cocok. ";
         qInfo()<<matchERN.captured(0);
         accdb AksesDB;
 
@@ -88,9 +97,9 @@ void Client::run()
         response.append("02");
         response.append(AksesDB.data_iklan);
         response.append("TAIL");
-        /* kalista*/
 
-        AksesDB.write_db(request);
+
+	/* to send request to device */
         qInfo()<<"CROT pesan terikirim : "<<response;
         socket->write(response);
         socket->waitForBytesWritten();
@@ -130,7 +139,8 @@ void Client::run()
         response.append("02");
         response.append(AksesDB.data_iklan);
         response.append("TAIL");
-        /* kalista*/
+       
+	/* Write request to database*/
 
         AksesDB.write_db(request);
         qInfo()<<"CROT pesan terikirim : "<<response;
