@@ -87,7 +87,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             qInfo()<<"waktunya execute the query";
             /* simple with the man */
             QSqlQuery query;
-            QString cmd="select * from NeiraIklanVer2 Where (NO = (select min(NO) from NeiraIklanVer2) and Flag=0);";
+            QString cmd="SELECT * FROM NeiraIklanVer2 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
             if(!query.exec(cmd)){
                 qInfo()<<"Query iklan error, croot";
             }
@@ -112,7 +112,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             qInfo()<<"waktunya execute the query";
             qInfo()<<"CPUID String : "<<CPUID_string;
             QSqlQuery query;
-            QString cmd="SELECT COALESCE(MAX(CASE WHEN UUID_ENC  IS NOT NULL and CPUID=:cpuid THEN NO END), MAX(NO)) AS id FROM   NeiraIklanVer3;";
+            QString cmd="SELECT * FROM NeiraIklanVer3 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
             if(!query.exec(cmd)){
@@ -123,7 +123,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 while(query.next()){
                     QString idiklan=query.value(1).toString();
                     QString dataiklan=query.value(3).toString();
-            qDebug()<<"database Iklan id : "<<idiklan;
+                    qDebug()<<"database Iklan id : "<<idiklan;
                     this->iklan_id = idiklan;
                     this->data_iklan = dataiklan;
 
