@@ -88,6 +88,8 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             /* simple with the man */
             QSqlQuery query;
             QString cmd="SELECT * FROM NeiraIklanVer2 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
+            query.prepare(cmd);
+            query.bindValue(":cpuid", CPUID_string);
             if(!query.exec(cmd)){
                 qInfo()<<"Query iklan error, croot";
             }
