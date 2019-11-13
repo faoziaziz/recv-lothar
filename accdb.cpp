@@ -91,18 +91,27 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
             if(!query.exec()){
-                qInfo()<<"Query iklan error, croot";
+                qInfo()<<"Query iklan error";
                 qInfo() << db.lastError().text();
                 qInfo() << query.lastError().text();
             }
             else{
                 qInfo()<<"Nyambung dengan query";
                 while(query.next()){
+                    /* to catenate the sumber */
                     QString idiklan=query.value(1).toString();
                     QString dataiklan=query.value(3).toString();
+                    QString dataTeks1 = query.value(9).toString();
+                    QString dataTeks2 = query.value(10).toString();
+
                     qDebug()<<"database Iklan id : "<<idiklan;
+
                     this->iklan_id = idiklan;
                     this->data_iklan = dataiklan;
+                    /* to insert the data teks */
+                    this->data_teks1 = dataTeks1;
+                    this->data_teks2 = dataTeks2;
+
                 }
             }
         }
@@ -129,9 +138,20 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 while(query.next()){
                     QString idiklan=query.value(1).toString();
                     QString dataiklan=query.value(3).toString();
+                    /* read from database */
+                    QString dataTeks1 = query.value(9).toString();
+                    QString dataTeks2 = query.value(10).toString();
+
                     qDebug()<<"database Iklan id : "<<idiklan;
                     this->iklan_id = idiklan;
                     this->data_iklan = dataiklan;
+
+                    /* data teks 1 adalah data member id */
+                    this->data_teks1 = dataTeks1;
+                    /* data teks 2 adalah padding */
+                    this->data_teks2 = dataTeks2;
+
+
 
 
                 }

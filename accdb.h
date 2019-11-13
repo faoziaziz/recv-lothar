@@ -29,6 +29,8 @@ public:
     /* crot */
     QString iklan_id;
     QString data_iklan;
+    QString data_teks1;
+    QString data_teks2;
 
     /* variable */
     QString hostname;
