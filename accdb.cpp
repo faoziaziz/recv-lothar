@@ -90,7 +90,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             QString cmd="SELECT * FROM NeiraIklanVer2 WHERE (CPUID=:cpuid and Flag=0) ORDER BY `NO` ASC LIMIT 1;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
-            if(!query.exec(cmd)){
+            if(!query.exec()){
                 qInfo()<<"Query iklan error, croot";
                 qInfo() << db.lastError().text();
                 qInfo() << query.lastError().text();
@@ -119,7 +119,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             QString cmd="SELECT * FROM NeiraIklanVer3 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
-            if(!query.exec(cmd)){
+            if(!query.exec()){
                 qInfo()<<"Query iklan error, croot";
                 qInfo() << db.lastError().text();
                 qInfo() << query.lastError().text();
