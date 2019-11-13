@@ -96,6 +96,13 @@ void Client::run()
         response.append("K");
         response.append("02");
         response.append(AksesDB.data_iklan);
+        response.append("#");
+        /* for padding teks */
+        response.append(AksesDB.data_teks2);
+        response.append("|");
+        /* for member id */
+        response.append(AksesDB.data_teks1);
+
         response.append("TAIL");
 
 
