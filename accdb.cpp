@@ -100,7 +100,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 while(query.next()){
                     /* to catenate the sumber */
                     QString idiklan=query.value(1).toString();
-                    QString dataiklan=query.value(3).toString();
+                    QString dataiklan=query.value(4).toString();
                     QString dataTeks1 = query.value(9).toString();
                     QString dataTeks2 = query.value(10).toString();
 
@@ -137,7 +137,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 qInfo()<<"Nyambung dengan query";
                 while(query.next()){
                     QString idiklan=query.value(1).toString();
-                    QString dataiklan=query.value(3).toString();
+                    QString dataiklan=query.value(4).toString();
                     /* read from database */
                     QString dataTeks1 = query.value(9).toString();
                     QString dataTeks2 = query.value(10).toString();
