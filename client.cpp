@@ -1,7 +1,7 @@
 /*
-	Author : Aziz Amerul Faozi
-	Description :
-		Digunakan hanya untuk melakukan testing di server tertentu.
+    Author : Aziz Amerul Faozi
+    Description :
+        Digunakan hanya untuk melakukan testing di server tertentu.
 */
 
 #include "client.h"
@@ -65,7 +65,7 @@ void Client::run()
     matchRDM =reRDM.match(request.mid(16,11));
 
     if(matchERN.hasMatch()){
-	/* This will execute if device requie Earning */
+        /* This will execute if device requie Earning */
         qInfo()<<"REQUEST_EARNING Executed. ";
         qInfo()<<request;
         qInfo()<<"ada yang cocok. ";
@@ -102,12 +102,12 @@ void Client::run()
         response.append("|");
         /* for member id */
         response.append(AksesDB.data_teks1);
-	response.append("#");
-	response.append(AksesDB.data_iklan);
+        response.append("#");
+        response.append(AksesDB.data_iklan);
         response.append("TAIL");
 
 
-	/* to send request to device */
+        /* to send request to device */
         qInfo()<<"CROT pesan terikirim : "<<response;
         socket->write(response);
         socket->waitForBytesWritten();
@@ -152,10 +152,10 @@ void Client::run()
         response.append("|");
         /* for member id */
         response.append(AksesDB.data_teks1);
-	response.append("#");
-	response.append(AksesDB.data_iklan);
+        response.append("#");
+        response.append(AksesDB.data_iklan);
         response.append("TAIL");
-       
+
         /* Write request to database*/
 
         AksesDB.write_db(request);

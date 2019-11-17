@@ -23,6 +23,7 @@ public:
         if 2 then redemn
     */
     void get_iklan(int mode, QString CPUID_String);
+    void update_iklan_toflag(QString CPUID_String, int mode);
     /* destructor */
     ~accdb();
 

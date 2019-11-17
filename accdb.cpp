@@ -111,7 +111,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                     /* to insert the data teks */
                     this->data_teks1 = dataTeks1;
                     this->data_teks2 = dataTeks2;
-
+                    update_iklan_toflag(CPUID_string, mode);
                 }
             }
         }
@@ -150,14 +150,71 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                     this->data_teks1 = dataTeks1;
                     /* data teks 2 adalah padding */
                     this->data_teks2 = dataTeks2;
-
-
-
+                    update_iklan_toflag(CPUID_string, mode);
 
                 }
             }
         }
 
+    }
+
+}
+
+void accdb::update_iklan_toflag(QString CPUID_String, int mode)
+{
+    /* CPUID_String used for confirmated mode for check store*/
+    if(mode==1){
+        /* Earing mode */
+        /* Update to NeiraIklanVer2 Table */
+        qInfo()<<"update iklan mode "<<mode;
+        if(!this->db.open()){
+            qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
+        }
+        else{
+            qInfo()<<"waktunya execute the query";
+            qInfo()<<"CPUID String : "<<CPUID_String;
+            QSqlQuery query;
+            QString cmd;
+            cmd = "Update NeiraIklanVer2 set Flag=1 where ID_TGL=:IdTanggal";
+            query.prepare(cmd);
+            query.bindValue(":IdTanggal",this->iklan_id);
+            if(!query.exec()){
+                qInfo()<<"Query iklan error, croot";
+                qInfo() << db.lastError().text();
+                qInfo() << query.lastError().text();
+            }
+            else{
+                qInfo()<<"Update sukses";
+            }
+        }
+    }
+
+
+    else if(mode==2){
+        /* Reedem mode */
+        /* Update to NeiraIklanVer3 Table */
+        qInfo()<<"update iklan mode "<<mode;
+
+        if(!this->db.open()){
+            qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
+        }
+        else{
+            qInfo()<<"waktunya execute the query";
+            qInfo()<<"CPUID String : "<<CPUID_String;
+            QSqlQuery query;
+            QString cmd;
+            cmd = "Update NeiraIklanVer3 set Flag=1 where ID_TGL=:IdTanggal";
+            query.prepare(cmd);
+            query.bindValue(":IdTanggal",this->iklan_id);
+            if(!query.exec()){
+                qInfo()<<"Query iklan error, croot";
+                qInfo() << db.lastError().text();
+                qInfo() << query.lastError().text();
+            }
+            else{
+                qInfo()<<"Update sukses";
+            }
+        }
     }
 
 }
