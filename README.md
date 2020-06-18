@@ -13,3 +13,11 @@ ENGINE=InnoDB
 ;
 
 ```
+## How to Build
+```sh
+mkdir build
+cd build
+qmake ..
+make 
+./NeiraRecvServ
+```
