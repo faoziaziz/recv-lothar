@@ -23,6 +23,9 @@ void Client::run()
     QByteArray request = socket->readAll();
     qInfo() << "Request Length: " << request.length();
     qInfo() <<request;
+
+    /* request adalah data yang harus di parsing */
+   
     accdb AksesDB;
 
 
@@ -39,7 +42,27 @@ void Client::run()
         socket->write("NOK");
         socket->waitForBytesWritten();
     } else {
+
+      /* write to database as recv*/
+      
         AksesDB.write_db(request);
+	/* how get the data */
+	QByteArray cpu_id_byte;
+
+	//request.resize(15);
+	for(int i=0; i<15; i++){
+	  cpu_id_byte[i]=request[i];
+	}
+
+	QString SerialNumber = QString(cpu_id_byte);
+
+	qInfo()<<"Serial number ("<<SerialNumber<<")()=>>>>"<<endl;
+       
+
+	/* akses to parser */
+	AksesDB.parser_db(SerialNumber, 2, request);
+
+	
         qInfo()<<"CCROT pesan terikirim : "<<response;
         socket->write("ACK");
         socket->waitForBytesWritten();

@@ -9,19 +9,20 @@
 
 class Client : public QObject, public QRunnable
 {
-    Q_OBJECT
-public:
-    explicit Client(QObject *parent = nullptr, qintptr handle = 0);
+  Q_OBJECT
+ public:
+  explicit Client(QObject *parent = nullptr, qintptr handle = 0);
 
-signals:
+ signals:
 
-public slots:
+  public slots:
 
-    // QRunnable interface
-public:
-    void run();
-private:
-    qintptr handle;
+   // QRunnable interface
+   public:
+  void run();
+ void parser(QByteArray data_request);
+   private:
+   qintptr handle;
 };
 
 #endif // CLIENT_H
