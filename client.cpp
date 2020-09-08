@@ -24,6 +24,8 @@ void Client::run()
     QString request2, request3;
     QString DeviceId;
 
+
+    qInfo()<<"Something happend !! ()()====>>>"<<endl;
     reERN.setPattern("REQUEST_ERP");
     reRDM.setPattern("REQUEST_RDT");
 
@@ -57,6 +59,7 @@ void Client::run()
         DeviceId[i]=request[i];
     }
 
+    qInfo()<<"Device Id "<<endl;
     /* For executing */
     request2 = request;
 
@@ -77,6 +80,8 @@ void Client::run()
 
         QByteArray data("HEAD");
         QByteArray response;
+
+	/* earning will set to mode==1 see the code accdb.cpp 1 */
         AksesDB.get_iklan(1, DeviceId);
 
 
@@ -128,6 +133,7 @@ void Client::run()
 
         QByteArray data("HEAD");
         QByteArray response;
+	/* acces db set iklan 2*/
         AksesDB.get_iklan(2, DeviceId);
 
         /*
@@ -150,6 +156,8 @@ void Client::run()
         /* for padding teks */
         response.append(AksesDB.data_teks2);
         response.append("|");
+
+	
         /* for member id */
         response.append(AksesDB.data_teks1);
         response.append("#");
@@ -177,6 +185,9 @@ void Client::run()
         if (match1.hasMatch()){
             qInfo()<<"Kedetek";
         }
+	qInfo()<<"===================="<<endl;
+	qInfo()<<"Seending nok "<<endl;
+	qInfo()<<"===================="<<endl;
         socket->write("NOK");
         socket->waitForBytesWritten();
     }

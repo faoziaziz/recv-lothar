@@ -7,10 +7,17 @@ accdb::accdb()
      *  this constructor for accessing database
     */
 
-    this->hostname ="localhost";
-    this->username="trumon";
-    this->password="tappingbox123";
-    this->database="Trumon";
+    //this->hostname ="localhost";
+    //this->username="trumon";
+    //this->password="tappingbox123";
+    //this->database="Trumon";
+
+    this->hostname ="10.100.41.50";
+    this->username="prasimax";
+    this->password="AtE0T8EXAV5k8prksf5z";
+    this->database="trumon";
+
+  
 
     this->db.setHostName(this->hostname);
     this->db.setUserName(this->username);
@@ -78,6 +85,7 @@ void accdb::write_db(QByteArray data)
 void accdb::get_iklan(int mode, QString CPUID_string)
 {
     if (mode==1){
+      
         qInfo()<<"get data iklan"<<endl;
         if(!this->db.open()){
             qInfo()<<"gak bisa dapet data iklan dbnya ngaco";
@@ -87,7 +95,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             qInfo()<<"waktunya execute the query";
             /* simple with the man */
             QSqlQuery query;
-            QString cmd="SELECT * FROM NeiraIklanVer2 WHERE (CPUID=:cpuid and Flag=0) ORDER BY `NO` ASC LIMIT 1;";
+            QString cmd="SELECT * FROM NeiraIklanVer3 WHERE (CPUID=:cpuid and Flag=0) ORDER BY `NO` ASC LIMIT 1;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
             if(!query.exec()){
@@ -99,10 +107,14 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                 qInfo()<<"Nyambung dengan query";
                 while(query.next()){
                     /* to catenate the sumber */
+		    /* idiklan = ID_TGL */
                     QString idiklan=query.value(1).toString();
-                    QString dataiklan=query.value(4).toString();
-                    QString dataTeks1 = query.value(9).toString();
-                    QString dataTeks2 = query.value(10).toString();
+		    /* dataiklan = Content */
+                    QString dataiklan=query.value(2).toString();
+		    /* dataTeks1 = MemberID*/
+                    QString dataTeks1 = query.value(8).toString();
+		    /* dataTeks2 = PadTeks*/
+                    QString dataTeks2 = query.value(12).toString();
 
                     qDebug()<<"database Iklan id : "<<idiklan;
 
@@ -111,6 +123,8 @@ void accdb::get_iklan(int mode, QString CPUID_string)
                     /* to insert the data teks */
                     this->data_teks1 = dataTeks1;
                     this->data_teks2 = dataTeks2;
+
+		    /* update iklan to flag*/
                     update_iklan_toflag(CPUID_string, mode);
                 }
             }
@@ -125,7 +139,7 @@ void accdb::get_iklan(int mode, QString CPUID_string)
             qInfo()<<"waktunya execute the query";
             qInfo()<<"CPUID String : "<<CPUID_string;
             QSqlQuery query;
-            QString cmd="SELECT * FROM NeiraIklanVer3 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
+            QString cmd="SELECT * FROM NeiraIklanVer2 WHERE CPUID=:cpuid and Flag=0 ORDER BY `NO` ASC LIMIT 1;";
             query.prepare(cmd);
             query.bindValue(":cpuid", CPUID_string);
             if(!query.exec()){
@@ -175,7 +189,7 @@ void accdb::update_iklan_toflag(QString CPUID_String, int mode)
             qInfo()<<"CPUID String : "<<CPUID_String;
             QSqlQuery query;
             QString cmd;
-            cmd = "Update NeiraIklanVer2 set Flag=1 where ID_TGL=:IdTanggal";
+            cmd = "Update NeiraIklanVer3 set Flag=1 where ID_TGL=:IdTanggal";
             query.prepare(cmd);
             query.bindValue(":IdTanggal",this->iklan_id);
             if(!query.exec()){
@@ -203,7 +217,7 @@ void accdb::update_iklan_toflag(QString CPUID_String, int mode)
             qInfo()<<"CPUID String : "<<CPUID_String;
             QSqlQuery query;
             QString cmd;
-            cmd = "Update NeiraIklanVer3 set Flag=1 where ID_TGL=:IdTanggal";
+            cmd = "Update NeiraIklanVer2 set Flag=1 where ID_TGL=:IdTanggal";
             query.prepare(cmd);
             query.bindValue(":IdTanggal",this->iklan_id);
             if(!query.exec()){
