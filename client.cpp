@@ -45,7 +45,7 @@ void Client::run()
 
     /* Show information for data recive*/
     qInfo() << "Request Length: " << request.length();
-    qInfo()<<"Data Dari MCU"<<endl;
+    qInfo()<<"Data Dari MCU : "<<endl;
     qInfo() <<request;
 
     /* Convert to request string siapa tahu suatu harii kepake*/
@@ -60,6 +60,7 @@ void Client::run()
     }
 
     qInfo()<<"Device Id "<<endl;
+
     /* For executing */
     request2 = request;
 
@@ -91,30 +92,40 @@ void Client::run()
          *  those string are REQUEST_RDT and REQUEST_ERP
         */
 
+	if(!AksesDB.iklan_id.isEmpty()){
+	  qInfo()<<"tidak kosong";
 
+	  response.append(data);
+	  response.append(AksesDB.iklan_id);
+       
+	  qDebug()<<"Iklan Id :"<<AksesDB.iklan_id;
+	  response.append("K");
+	  response.append("02");
+	  //response.append(AksesDB.data_iklan);
+	  //response.append("#");
+	  /* for padding teks */
+	  response.append(AksesDB.data_teks2);
+	  response.append("|");
+	  /* for member id */
+	  response.append(AksesDB.data_teks1);
+	  response.append("#");
+	  response.append(AksesDB.data_iklan);
+	  response.append("TAIL");
+	  /* to send request to device */
+	  qInfo()<<"sent : "<<response;
+	  socket->write(response);
+	  
+	} else {
+	  qInfo()<<"kosong";
+	  socket->write("NOK");
+	  qInfo()<<"sending NOK"<<endl;
+	}
         /* Using regex to define earning or redemtion */
 
-        response.append(data);
-        response.append(AksesDB.iklan_id);
-
-        qDebug()<<"Iklan Id :"<<AksesDB.iklan_id;
-        response.append("K");
-        response.append("02");
-        //response.append(AksesDB.data_iklan);
-        //response.append("#");
-        /* for padding teks */
-        response.append(AksesDB.data_teks2);
-        response.append("|");
-        /* for member id */
-        response.append(AksesDB.data_teks1);
-        response.append("#");
-        response.append(AksesDB.data_iklan);
-        response.append("TAIL");
+        
 
 
-        /* to send request to device */
-        qInfo()<<"CROT pesan terikirim : "<<response;
-        socket->write(response);
+        
         socket->waitForBytesWritten();
 
     }
@@ -147,7 +158,6 @@ void Client::run()
 
         response.append(data);
         response.append(AksesDB.iklan_id);
-
         qDebug()<<"Iklan Id :"<<AksesDB.iklan_id;
         response.append("K");
         response.append("02");
@@ -188,12 +198,12 @@ void Client::run()
 	qInfo()<<"===================="<<endl;
 	qInfo()<<"Seending nok "<<endl;
 	qInfo()<<"===================="<<endl;
-        socket->write("NOK");
+	socket->write("NOK");
         socket->waitForBytesWritten();
     }
 
 
-    /*socket close */
+    /* socket close */
     socket->close();
     socket->deleteLater();
 
