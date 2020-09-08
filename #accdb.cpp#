@@ -7,7 +7,7 @@ accdb::accdb()
    *  this constructor for accessing database
    */
 
-  this->hostname ="mygetplus-cluster-test.cluster-cstnh3syiokv.ap-southeast-1.rds.amazonaws.com";
+  this->hostname ="10.100.41.50";
   this->username="prasimax";
   this->password="AtE0T8EXAV5k8prksf5z";
   this->database="trumon";
@@ -181,7 +181,7 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	QJsonDocument doc(jObj);
 	qDebug()<<doc.toJson();
 
-	QNetworkRequest req(QUrl("https://mobile-development.gpiapis.com/neira/v1/202005/parser"));
+	QNetworkRequest req(QUrl(""));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
 	QNetworkAccessManager man;
