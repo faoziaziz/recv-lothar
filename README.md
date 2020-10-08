@@ -5,5 +5,5 @@ sudo apt-get install build-essential cmake qtbase5-dev libqt5x11extras5-dev qtto
 ```
  ## some maybe need to install 
  ```bash
- sudo apt-get install qt5-default
+ sudo apt-get install qt5-default libmysqlclient-dev
  ```
