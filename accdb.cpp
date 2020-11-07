@@ -7,9 +7,9 @@ accdb::accdb()
    *  this constructor for accessing database
    */
 
-  this->hostname ="mygetplus-cluster-test.cluster-cstnh3syiokv.ap-southeast-1.rds.amazonaws.com";
-  this->username="prasimax";
-  this->password="AtE0T8EXAV5k8prksf5z";
+  this->hostname ="localhost";
+  this->username="pos_almar";
+  this->password="@Alm4r2020";
   this->database="trumon";
 
   
