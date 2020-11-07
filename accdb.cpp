@@ -7,9 +7,9 @@ accdb::accdb()
    *  this constructor for accessing database
    */
 
-  this->hostname ="mygetplus-cluster-test.cluster-cstnh3syiokv.ap-southeast-1.rds.amazonaws.com";
-  this->username="prasimax";
-  this->password="AtE0T8EXAV5k8prksf5z";
+  this->hostname ="localhost";
+  this->username="pos_almar";
+  this->password="@Alm4r2020";
   this->database="trumon";
 
   this->db.setHostName(this->hostname);
@@ -117,7 +117,7 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
     /* jika conneksi telah selesai */
     qInfo()<<"entering to get pattern"<<endl;
     QSqlQuery query;
-    QString cmd="SELECT * from devicetable where (SerialNumber=:ser_num and ParserMode=:mode_parser)";
+    QString cmd="SELECT * from DeviceTable where (SerialNumber=:ser_num and ParserMode=:mode_parser)";
     query.prepare(cmd);
     query.bindValue(":ser_num", SerialNumber);
     query.bindValue(":mode_parser", ModeParser);
@@ -181,7 +181,7 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	QJsonDocument doc(jObj);
 	qDebug()<<doc.toJson();
 
-	QNetworkRequest req(QUrl("https://mobile-development.gpiapis.com/neira/v1/202005/parser"));
+	QNetworkRequest req(QUrl("https://localhost:8087/neira/v1/202005/parser"));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
 	QNetworkAccessManager man;
