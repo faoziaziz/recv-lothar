@@ -1,7 +1,3 @@
-#!/bin/sh
-
-./NeiraRecvServ localhost trumon tappingbox123 Trumon
-
 
 #!/bin/bash
 
@@ -9,7 +5,7 @@
 
 date
 
-var=$(ps axu | grep -v grep | grep "TcpServerTS1 3321")
+var=$(ps axu | grep -v grep | grep "neira7669 127.0.0.1")
         if [ ! -z "$var" ];
                 then echo "found";
         else
