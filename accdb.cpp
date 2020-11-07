@@ -6,7 +6,6 @@ accdb::accdb()
   /*
    *  this constructor for accessing database
    */
-
   this->hostname ="localhost";
   this->username="pos_almar";
   this->password="@Alm4r2020";
@@ -118,6 +117,7 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
     qInfo()<<"entering to get pattern"<<endl;
     QSqlQuery query;
     QString cmd="SELECT * from DeviceTable where (SerialNumber=:ser_num and ParserMode=:mode_parser)";
+    
     query.prepare(cmd);
     query.bindValue(":ser_num", SerialNumber);
     query.bindValue(":mode_parser", ModeParser);
@@ -150,7 +150,6 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	    data[iter]=' ';
 	  }
 	}
-
 	/* next i should get combine the regex */
 	qInfo()<<"process the parser"<<endl;
 
@@ -163,7 +162,7 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	REGEX_QR.setPattern(patternQR);
 
 	/* combine the regex with the string data */
-	QString data_total = REGEX_TOTAL.match(data).captured(REGEX_TOTAL.match(data).lastCapturedIndex());
+        QString data_total = REGEX_TOTAL.match(data).captured(REGEX_TOTAL.match(data).lastCapturedIndex());
 	QString data_qr = REGEX_QR.match(data).captured(REGEX_QR.match(data).lastCapturedIndex());
 	qInfo()<<"data_total = "<<data_total;
 
@@ -171,30 +170,32 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 
 	QString total=data_total;
 	QString serialnum=SerialNumber;
-	QString qr="mantapqr";
-	QJsonObject jObj;
-	jObj.insert("total", QJsonValue::fromVariant(total));
-	jObj.insert("serialnum", QJsonValue::fromVariant(serialnum));
-	jObj.insert("qr", QJsonValue::fromVariant(data_qr));
+	save_trans(SerialNumber, total);
+//	QString qr="mantapqr";
+//	QJsonObject jObj;
+//	jObj.insert("total", QJsonValue::fromVariant(total));
+//	jObj.insert("serialnum", QJsonValue::fromVariant(serialnum));
+//	jObj.insert("qr", QJsonValue::fromVariant(data_qr));
 
 	/* JOBj */
-	QJsonDocument doc(jObj);
-	qDebug()<<doc.toJson();
+	//QJsonDocument doc(jObj);
+	//qDebug()<<doc.toJson();
 
-	QNetworkRequest req(QUrl("https://localhost:8087/neira/v1/202005/parser"));
-	req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+	//QNetworkRequest req(QUrl("https://localhost:8087/neira/v1/202005/parser"));
+	//req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-	QNetworkAccessManager man;
+	//QNetworkAccessManager man;
 
-	QNetworkReply *reply = man.post(req, doc.toJson());
+	//QNetworkReply *reply = man.post(req, doc.toJson());
 
-	while(!reply->isFinished()){
-	  qApp->processEvents();
-	}
+	//while(!reply->isFinished()){
+	//  qApp->processEvents();
+	//}
+	
 
 	qInfo()<<"harusnya selesai"<<endl;
 	/* [total, serialnum, qr]*/
-	QByteArray responseBytes = reply->readAll();
+//	QByteArray responseBytes = reply->readAll();
 
 	
 	
@@ -260,6 +261,50 @@ void accdb::test_db(){
     this->db.close();
 
   }
+}
+
+void accdb::save_trans(QString SerialNumber, QString total){
+	
+	QString DeviceID;
+	qInfo()<<"Save transaction !! "<<SerialNumber<<endl;
+	if(!this->db.open()){
+		qInfo()<<"Database tidak bisa dibuka"<<endl;
+
+	} else {
+		
+		qInfo()<<"entering Transacttion \n";
+		QSqlQuery query;
+		QString cmd="SELECT * from DeviceTable where (SerialNumber=:ser_num);";
+		query.prepare(cmd);
+		query.bindValue(":ser_num", SerialNumber);
+		if(!query.exec()){
+			qInfo()<<"query transaction error"<<endl;
+			
+		} else {
+			while(query.next()){
+			qInfo()<<"nilai nya "<<query.value(2).toString()<<endl;
+				DeviceID = query.value(1).toString();
+				qInfo()<<"Device ID : "<<DeviceID;
+
+				QSqlQuery query2;
+				query2.prepare("INSERT INTO Transaksi (DeviceID, Nilai) VALUES (:DeviceId, :Nilai)");
+				query2.bindValue(":DeviceId", DeviceID);
+				query2.bindValue(":Nilai", total);
+				if(!query2.exec()){
+					qInfo()<<"end of 2"<<endl;
+				} else {
+					qInfo()<<"Suksess"<<endl;
+				}
+			
+			}
+			
+		}
+		}
+	
+//	qInfo()<<"Deviceid : "<<DeviceID;
+	this->db.close();
+
+
 }
 
 accdb::~accdb()

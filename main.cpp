@@ -9,12 +9,14 @@ int main(int argc, char *argv[])
         username : trumonuser
         password : trumonpassword
     */
+
     QCoreApplication a(argc, argv);
     QString hostname;
     QString username;
     QString password;
     QString database;
     Server server;
+
     //server.start(2020);
     if (argc == 5){
         hostname = argv[1];
