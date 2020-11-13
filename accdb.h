@@ -35,7 +35,7 @@ public:
     void parser_db(QString SerialNumber, int ParserMode, QByteArray data );
     void lets_parse(QByteArray DataTrans);
     void get_iklan();
-	void save_trans(QString SerialNumber, QString total);
+	void save_trans(QString SerialNumber, QString total, QString data_nomer);
     /* destructor */
     ~accdb();
 

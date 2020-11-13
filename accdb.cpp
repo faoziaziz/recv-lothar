@@ -137,10 +137,15 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	QString patternTotal = query.value(16).toString();
 	/* pattern qr nomer 20 alias PatternCustomField */
 	QString patternQR = query.value(19).toString();
+	/* pattern nomer 14 */
+	QString patternNomer = query.value(13).toString();
+	
+
 
 	qInfo()<<"====================================="<<endl;
 	qInfo()<<"Pattern Total : "<<patternTotal<<endl;
 	qInfo()<<"Pattern QR : "<<patternQR<<endl;
+	qInfo()<<"Pattern No : "<<patternNomer<<endl;
 	qInfo()<<"======================================="<<endl;
 
 	/*lets enter the parse */
@@ -156,21 +161,25 @@ void accdb::parser_db(QString SerialNumber, int ModeParser, QByteArray data){
 	/* Declare the regular expression for every unit */
 	QRegularExpression REGEX_TOTAL;
 	QRegularExpression REGEX_QR;
+	QRegularExpression REGEX_NOMER;
 
 	/* execute the regex */
 	REGEX_TOTAL.setPattern(patternTotal);
 	REGEX_QR.setPattern(patternQR);
+	REGEX_NOMER.setPattern(patternNomer);
 
 	/* combine the regex with the string data */
         QString data_total = REGEX_TOTAL.match(data).captured(REGEX_TOTAL.match(data).lastCapturedIndex());
 	QString data_qr = REGEX_QR.match(data).captured(REGEX_QR.match(data).lastCapturedIndex());
+	QString data_nomer =REGEX_NOMER.match(data).captured(REGEX_NOMER.match(data).lastCapturedIndex());
 	qInfo()<<"data_total = "<<data_total;
+	qInfo()<<"data_nomer = "<<data_nomer;
 
 	/* an then post to api */
 
 	QString total=data_total;
 	QString serialnum=SerialNumber;
-	save_trans(SerialNumber, total);
+	save_trans(SerialNumber, total, data_nomer);
 //	QString qr="mantapqr";
 //	QJsonObject jObj;
 //	jObj.insert("total", QJsonValue::fromVariant(total));
@@ -260,10 +269,10 @@ void accdb::test_db(){
     /* get query */
     this->db.close();
 
-  }
+ } 
 }
 
-void accdb::save_trans(QString SerialNumber, QString total){
+void accdb::save_trans(QString SerialNumber, QString total, QString data_nomer){
 	
 	QString DeviceID;
 	qInfo()<<"Save transaction !! "<<SerialNumber<<endl;
@@ -287,9 +296,10 @@ void accdb::save_trans(QString SerialNumber, QString total){
 				qInfo()<<"Device ID : "<<DeviceID;
 
 				QSqlQuery query2;
-				query2.prepare("INSERT INTO Transaksi (DeviceID, Nilai) VALUES (:DeviceId, :Nilai)");
+				query2.prepare("INSERT INTO Transaksi (DeviceID, Nilai, Nomor) VALUES (:DeviceId, :Nilai, :Nomor)");
 				query2.bindValue(":DeviceId", DeviceID);
 				query2.bindValue(":Nilai", total);
+				query2.bindValue(":Nomor", data_nomer);
 				if(!query2.exec()){
 					qInfo()<<"end of 2"<<endl;
 				} else {
